@@ -34,7 +34,7 @@ var bridge = {
 	},
 };
 
-var enabled = false;
+var enabled = true;
 var blacklisted = false;
 
 browser.runtime.onMessage.addListener(obj => {
@@ -458,6 +458,7 @@ function isValidElem(elem) {
 }
 
 window.addEventListener("keydown", function(evt) {
+
 	if (!enabled || blacklisted)
 		return;
 	if (/about:.+/.test(location.href))
@@ -524,7 +525,6 @@ window.addEventListener("keydown", function(evt) {
 	}
 
 	//Handle other key presses
-
 	//Deselect element
 	if (onWebPage && isMatch(keys.elem_deselect, evt)) {
 		blobList.hideBlobs();

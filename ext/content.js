@@ -480,18 +480,20 @@ window.addEventListener("keydown", function(evt) {
 
 	//User is typing a key to a blob
 	if (blobList.visible) {
-		evt.preventDefault();
-		evt.stopPropagation();
 
 		//Hide blobs if appropriate
 		//Escape key always hides blobs if visible
 		if (evt.which === 27 || isMatch(keys.blobs_hide, evt)) {
+			evt.preventDefault();
+			evt.stopPropagation();
 			blobList.hideBlobs();
 			return;
 		}
 
 		//Backspace if appropriate
 		if (isMatch(keys.blobs_backspace, evt)) {
+			evt.preventDefault();
+			evt.stopPropagation();
 			blobList.backspace();
 
 			//Stop auto-submit timeout
@@ -505,6 +507,8 @@ window.addEventListener("keydown", function(evt) {
 
 		var c = evt.key;
 		if (conf.chars.indexOf(c) !== -1) {
+			evt.preventDefault();
+			evt.stopPropagation();
 			blobList.appendKey(c);
 
 			//Reset auto-submit timeout

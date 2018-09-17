@@ -4,7 +4,10 @@ var presets = {
 		conf: {
 			chars: "123456789",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: false
 		},
 		keys: {
 			scroll_up: " ",
@@ -32,7 +35,10 @@ var presets = {
 		conf: {
 			chars: ";alskdjfir",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: true
 		},
 		keys: {
 			scroll_up: "k",
@@ -60,7 +66,10 @@ var presets = {
 		conf: {
 			chars: "øalskdjfir",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: true
 		},
 		keys: {
 			scroll_up: "k",
@@ -88,7 +97,10 @@ var presets = {
 		conf: {
 			chars: "mqlskdjfir",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: true
 		},
 		keys: {
 			scroll_up: "k",
@@ -116,7 +128,10 @@ var presets = {
 		conf: {
 			chars: "sanotehucp",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: true
 		},
 		keys: {
 			scroll_up: "t",
@@ -144,7 +159,10 @@ var presets = {
 		conf: {
 			chars: "oairesntup",
 			blacklist: "",
-			timer: 0
+			timer: 0,
+			autoShowBlobs: false,
+			hideHidden: true,
+			hideOffscreen: true
 		},
 		keys: {
 			scroll_up: "e",

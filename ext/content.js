@@ -37,7 +37,6 @@ var bridge = {
 var enabled = true;
 var blacklisted = false;
 var timer = false;
-var autoShowBlobs = true;
 
 browser.runtime.onMessage.addListener(obj => {
 	switch (obj.action) {
@@ -249,9 +248,8 @@ var blobList = {
 			blobList.needLoadBlobs = true;
 		});
 		
-		if (autoShowBlobs) {
+		if (conf.autoShowBlobs) {
 			blobList.loadBlobs();
-			blobList.needLoadBlobs = false;
 			blobList.showBlobs();
 		}
 	},
@@ -273,8 +271,6 @@ var blobList = {
 		var i = 0;
 		var nRealBlobs = 0;
 		var windowWidth = document.body.clientWidth;
-		var hideOffscreen = false;
-		var hideHidden = true;
 		function addBlob() {
 			var linkElem = linkElems[i];
 
@@ -284,7 +280,7 @@ var blobList = {
 			if (linkElem === undefined)
 				return true;
 				
-			if (hideHidden) {
+			if (conf.hideHidden) {
 				//We don't want hidden elements
 				if ((linkElem === undefined)
 				||  (linkElem.style.display == "none")
@@ -300,7 +296,7 @@ var blobList = {
 			if (pos.top == 0 && pos.left == 0)
 				return true;
 
-			if (hideOffscreen) {
+			if (conf.hideOffscreen) {
 				//We don't need to get things far above our current scroll position
 				if (pos.top < (window.scrollY - 100))
 					return true;

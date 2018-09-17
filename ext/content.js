@@ -36,6 +36,8 @@ var bridge = {
 
 var enabled = true;
 var blacklisted = false;
+var timer = false;
+var autoShowBlobs = true;
 
 browser.runtime.onMessage.addListener(obj => {
 	switch (obj.action) {
@@ -246,6 +248,12 @@ var blobList = {
 		window.addEventListener("scroll", function() {
 			blobList.needLoadBlobs = true;
 		});
+		
+		if (autoShowBlobs) {
+			blobList.loadBlobs();
+			blobList.needLoadBlobs = false;
+			blobList.showBlobs();
+		}
 	},
 
 	currentIndex: 0,
@@ -253,7 +261,7 @@ var blobList = {
 		if (!onWebPage)
 			return;
 
-		var linkElems = document.querySelectorAll("a, button, input, select, textarea, summary, [role='button'], [tabindex='0']");
+		var linkElems = document.querySelectorAll("a, button, input, select, textarea, summary, [role='button'], [role='link'], [role='tab'], [role='checkbox'], [role='combobox'], [role='listbox'], [role='menuitem'], [role='menuitemcheckbox'], [role='menuitemradio'], [role='option'], [role='radio'], [role='slider'], [role='spinbutton'], [role='tree'], [role='treegrid'], [role='treeitem'], [tabindex='0']");
 
 		//Remove old container contents
 		blobList.container.innerText = "";
@@ -264,6 +272,9 @@ var blobList = {
 
 		var i = 0;
 		var nRealBlobs = 0;
+		var windowWidth = document.body.clientWidth;
+		var hideOffscreen = false;
+		var hideHidden = true;
 		function addBlob() {
 			var linkElem = linkElems[i];
 
@@ -272,12 +283,14 @@ var blobList = {
 
 			if (linkElem === undefined)
 				return true;
-
-			//We don't want hidden elements
-			if ((linkElem === undefined)
-			||  (linkElem.style.display == "none")
-			||  (linkElem.style.visibility == "hidden")) {
-				return true;
+				
+			if (hideHidden) {
+				//We don't want hidden elements
+				if ((linkElem === undefined)
+				||  (linkElem.style.display == "none")
+				||  (linkElem.style.visibility == "hidden")) {
+					return true;
+				}
 			}
 
 			//Get element's absolute position
@@ -287,13 +300,16 @@ var blobList = {
 			if (pos.top == 0 && pos.left == 0)
 				return true;
 
-			//We don't need to get things far above our current scroll position
-			if (pos.top < (window.scrollY - 100))
-				return true;
+			if (hideOffscreen) {
+				//We don't need to get things far above our current scroll position
+				if (pos.top < (window.scrollY - 100))
+					return true;
 
-			//We don't need things below our scroll position either
-			if (pos.top - 100 > (window.scrollY + window.innerHeight))
-				return true;
+				//We don't need things below our scroll position either
+				if (pos.top - 100 > (window.scrollY + window.innerHeight))
+					return true;
+			}
+
 
 			//Create the blob's key
 			key = createKey(nRealBlobs);
@@ -301,20 +317,26 @@ var blobList = {
 
 			var blobElem = document.createElement("div");
 			blobElem.innerText = key.toUpperCase();
+			var blobOffsetLeft = -5;
+			var blobOffsetTop = -5;
+			pos.top += blobOffsetTop;
+			pos.left += blobOffsetLeft;
+			if (pos.top < 0) pos.top = 0;
+			if (pos.left < 0) pos.left = 0;
+			if (pos.left > windowWidth - 20) pos.left = windowWidth - 20;
+
 			blobElem.style = [
 				"position: absolute",
-				"background-color: yellow",
-				"border: 1px solid black",
-				"border-radius: 10px",
-				"padding-left: 3px",
-				"padding-right: 3px",
+				"background-color: rgba(255,255,127,1)",
+				"border-bottom: solid 1px black",
+				"padding: 0 1px",
 				"color: black",
-				"font: 12px sans-serif",
+				"font: 10px sans-serif",
 				"top: "+pos.top+"px",
 				"left: "+pos.left+"px",
 				"line-height: 13px",
 				"font-size: 12px",
-				""
+				"font-weight: bold"
 			].join(" !important;");
 			blobList.container.appendChild(blobElem);
 
@@ -644,4 +666,3 @@ var scroll = {
 	endDate: 0,
 };
 
-var timer = false;
